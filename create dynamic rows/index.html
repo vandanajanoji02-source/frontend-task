@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dynamic Data Table</title>
+	<style>
+		:root {
+			font-family: Arial, sans-serif;
+			color: #1f2937;
+			background: #f3f4f6;
+		}
+
+		body {
+			margin: 0;
+			padding: 2rem 1rem;
+		}
+
+		main {
+			width: min(100%, 760px);
+			margin: 0 auto;
+		}
+
+		h1 {
+			margin-top: 0;
+		}
+
+		.entry-form {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr) auto;
+			gap: 0.75rem;
+			align-items: end;
+			padding: 1rem;
+			background: #ffffff;
+			border-radius: 8px;
+			box-shadow: 0 6px 18px rgb(31 41 55 / 10%);
+		}
+
+		label {
+			display: grid;
+			gap: 0.35rem;
+			font-weight: 600;
+		}
+
+		input {
+			box-sizing: border-box;
+			width: 100%;
+			padding: 0.65rem;
+			border: 1px solid #9ca3af;
+			border-radius: 5px;
+			font: inherit;
+		}
+
+		button {
+			padding: 0.65rem 1rem;
+			border: 0;
+			border-radius: 5px;
+			background: #2563eb;
+			color: #ffffff;
+			cursor: pointer;
+			font: inherit;
+			font-weight: 600;
+		}
+
+		button:hover {
+			background: #1d4ed8;
+		}
+
+		.table-wrapper {
+			margin-top: 1.5rem;
+			overflow-x: auto;
+			background: #ffffff;
+			border-radius: 8px;
+			box-shadow: 0 6px 18px rgb(31 41 55 / 10%);
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			min-width: 520px;
+		}
+
+		th,
+		td {
+			padding: 0.85rem 1rem;
+			border-bottom: 1px solid #e5e7eb;
+			text-align: left;
+		}
+
+		th {
+			background: #eff6ff;
+			color: #1e3a8a;
+		}
+
+		tbody tr:last-child td {
+			border-bottom: 0;
+		}
+
+		#empty-state {
+			color: #6b7280;
+			text-align: center;
+		}
+
+		@media (max-width: 680px) {
+			.entry-form {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Team members</h1>
+
+		<form id="entry-form" class="entry-form">
+			<label>
+				Name
+				<input id="name" name="name" type="text" required>
+			</label>
+			<label>
+				Email
+				<input id="email" name="email" type="email" required>
+			</label>
+			<label>
+				Role
+				<input id="role" name="role" type="text" required>
+			</label>
+			<button type="submit">Add row</button>
+		</form>
+
+		<div class="table-wrapper">
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Email</th>
+						<th scope="col">Role</th>
+					</tr>
+				</thead>
+				<tbody id="table-body">
+					<tr id="empty-state">
+						<td colspan="3">No team members added yet.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</main>
+
+	<script>
+		const entryForm = document.querySelector('#entry-form');
+		const tableBody = document.querySelector('#table-body');
+		const emptyState = document.querySelector('#empty-state');
+
+		entryForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+
+			const formData = new FormData(entryForm);
+			const row = document.createElement('tr');
+
+			['name', 'email', 'role'].forEach((field) => {
+				const cell = document.createElement('td');
+				cell.textContent = formData.get(field);
+				row.appendChild(cell);
+			});
+
+			emptyState.remove();
+			tableBody.appendChild(row);
+			entryForm.reset();
+			document.querySelector('#name').focus();
+		});
+	</script>
+</body>
+</html>
