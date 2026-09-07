@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Password Toggle Form</title>
+	<style>
+		:root {
+			font-family: Arial, sans-serif;
+			color: #1f2937;
+			background: #eef2ff;
+		}
+
+		body {
+			display: grid;
+			min-height: 100vh;
+			margin: 0;
+			place-items: center;
+		}
+
+		form {
+			width: min(90%, 360px);
+			padding: 2rem;
+			background: #ffffff;
+			border-radius: 10px;
+			box-shadow: 0 12px 30px rgb(31 41 55 / 12%);
+		}
+
+		h1 {
+			margin-top: 0;
+			font-size: 1.5rem;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 0.5rem;
+			font-weight: 600;
+		}
+
+		.password-control {
+			display: flex;
+			gap: 0.5rem;
+		}
+
+		input {
+			flex: 1;
+			min-width: 0;
+			padding: 0.7rem;
+			border: 1px solid #9ca3af;
+			border-radius: 6px;
+			font-size: 1rem;
+		}
+
+		button {
+			padding: 0.7rem 1rem;
+			border: 0;
+			border-radius: 6px;
+			background: #4f46e5;
+			color: #ffffff;
+			cursor: pointer;
+			font-size: 0.95rem;
+		}
+
+		button[type="submit"] {
+			width: 100%;
+			margin-top: 1rem;
+		}
+
+		button:hover {
+			background: #3730a3;
+		}
+
+		#message {
+			min-height: 1.25rem;
+			margin: 0.75rem 0 0;
+			color: #166534;
+		}
+	</style>
+</head>
+<body>
+	<form id="password-form">
+		<h1>Sign in</h1>
+		<label for="password">Password</label>
+		<div class="password-control">
+			<input id="password" name="password" type="password" autocomplete="current-password" required>
+			<button id="toggle-password" type="button" aria-controls="password" aria-label="Show password">Show</button>
+		</div>
+		<button type="submit">Submit</button>
+		<p id="message" role="status" aria-live="polite"></p>
+	</form>
+
+	<script>
+		const passwordInput = document.querySelector('#password');
+		const toggleButton = document.querySelector('#toggle-password');
+		const passwordForm = document.querySelector('#password-form');
+		const message = document.querySelector('#message');
+
+		toggleButton.addEventListener('click', () => {
+			const isHidden = passwordInput.type === 'password';
+			passwordInput.type = isHidden ? 'text' : 'password';
+			toggleButton.textContent = isHidden ? 'Hide' : 'Show';
+			toggleButton.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+		});
+
+		passwordForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+			message.textContent = 'Password entered successfully.';
+		});
+	</script>
+</body>
+</html>
